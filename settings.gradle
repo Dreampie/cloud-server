@@ -1,2 +1,2 @@
-rootProject.name = "cloud-server"
-include "config-server", "bus-server", "eureka-server"
+rootProject.name = 'cloud-server'
+include 'config-server', 'bus-server', 'eureka-server'

@@ -1,4 +1,4 @@
-package cn.dreampie;
+package cn.dreampie.server;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

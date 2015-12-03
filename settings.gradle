@@ -1,2 +1,2 @@
 rootProject.name = 'cloud-server'
-include 'config-server', 'eureka-server', 'auth-server'
+include 'config-server', 'eureka-server'

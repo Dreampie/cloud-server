@@ -5,6 +5,8 @@ subprojects {
       springBootPluginVersion = "1.2.7.RELEASE"
       springCloudStarterVersion = "1.0.2.RELEASE"
       springCloudConfigVersion = "1.0.3.RELEASE"
+      dockerVersion = "1.2"
+      dockerRegistry = "192.168.60.41:5000"
     }
     repositories {
       mavenCentral()
@@ -13,6 +15,7 @@ subprojects {
     dependencies {
       classpath("io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}")
       classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootPluginVersion}")
+      classpath("se.transmode.gradle:gradle-docker:${dockerVersion}")
     }
   }
 
@@ -30,6 +33,26 @@ subprojects {
     mavenLocal()
     maven { url "https://repo.spring.io/release" }
     mavenCentral()
+  }
+  task javadocJar(type: Jar) {
+    classifier = "javadoc"
+    from javadoc
+  }
+
+  task sourcesJar(type: Jar) {
+    classifier = "sources"
+    from sourceSets.main.allSource
+  }
+
+  artifacts {
+    archives javadocJar, sourcesJar
+  }
+
+  configurations.all {
+    resolutionStrategy {
+      cacheChangingModulesFor 0, "seconds"
+      cacheDynamicVersionsFor 0, 'seconds'
+    }
   }
 }
 

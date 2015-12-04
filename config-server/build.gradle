@@ -1,5 +1,6 @@
 apply plugin: "spring-boot"
 apply plugin: "io.spring.dependency-management"
+apply plugin: "docker"
 
 dependencyManagement {
   imports {
@@ -11,4 +12,18 @@ dependencies {
   compile("org.springframework.boot:spring-boot-starter")
   compile("org.springframework.cloud:spring-cloud-config-server")
   testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+  maintainer = "Dreampie <Dreampie@outlook.com>"
+  push = true
+  applicationName = jar.baseName
+  dockerfile = file("src/main/docker/Dockerfile")
+  registry = dockerRegistry
+  doFirst {
+    copy {
+      from jar
+      into stageDir
+    }
+  }
 }

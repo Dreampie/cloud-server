@@ -21,6 +21,7 @@ dependencies {
 }
 
 task buildDocker(type: Docker, dependsOn: build) {
+  tagVersion = project.version + ".1"
   maintainer = "Dreampie <Dreampie@outlook.com>"
   push = true
   applicationName = jar.baseName

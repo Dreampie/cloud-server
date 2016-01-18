@@ -1,3 +1,4 @@
+apply plugin: "application"
 apply plugin: "spring-boot"
 apply plugin: "io.spring.dependency-management"
 apply plugin: "docker"
@@ -8,14 +9,39 @@ dependencyManagement {
   }
 }
 
+ext {
+  commonVersion = "1.0-SNAPSHOT"
+}
+
 dependencies {
+  compile("tv.acfun.cloud.common:common:${commonVersion}")
+
   compile("org.springframework.boot:spring-boot-starter-web") {
     exclude module: "spring-boot-starter-tomcat"
   }
-  compile("org.springframework.boot:spring-boot-starter-undertow")
   compile("org.springframework.boot:spring-boot-starter-actuator")
-  compile("org.springframework.cloud:spring-cloud-config-server")
   testCompile("org.springframework.boot:spring-boot-starter-test")
+
+  compile("org.springframework.cloud:spring-cloud-config-server")
+}
+
+install.enabled = false
+uploadArchives.enabled = false
+
+task copyStartScript(type: Copy) {
+  from {
+    zipTree(configurations.compile.fileCollection { dep -> dep.group == "tv.acfun.cloud.common" && dep.name == "common" }.singleFile)
+  }
+  into "$buildDir/tmp/scripts"
+}
+
+startScripts {
+  dependsOn copyStartScript
+
+  unixStartScriptGenerator.template = resources.text.fromFile("$buildDir/tmp/scripts/customUnixStartScript.txt")
+  doLast {
+    delete windowsScript
+  }
 }
 
 task buildDocker(type: Docker, dependsOn: build) {
@@ -24,7 +50,7 @@ task buildDocker(type: Docker, dependsOn: build) {
   push = true
   applicationName = jar.baseName
   dockerfile = file("src/main/docker/Dockerfile")
-  registry = dockerRegistry
+  registry = gradleDockerRegistry
   doFirst {
     copy {
       from jar

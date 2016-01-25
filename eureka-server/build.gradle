@@ -2,6 +2,7 @@ apply plugin: "application"
 apply plugin: "spring-boot"
 apply plugin: "io.spring.dependency-management"
 apply plugin: "docker"
+apply plugin: "propdeps"
 
 springBoot {
   requiresUnpack = ["com.netflix.eureka:eureka-core", "com.netflix.eureka:eureka-client"]
@@ -9,7 +10,7 @@ springBoot {
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${springCloudStarterVersion}"
+    mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${springCloudStarterParentVersion}"
   }
 }
 
@@ -18,7 +19,7 @@ ext {
 }
 
 dependencies {
-  compile("tv.acfun.cloud.common:common:${commonVersion}")
+  provided("tv.acfun.cloud.common:common:${commonVersion}")
 
   compile("org.springframework.boot:spring-boot-starter-web") {
     exclude module: "spring-boot-starter-tomcat"
@@ -37,18 +38,22 @@ uploadArchives.enabled = false
 
 task copyStartScript(type: Copy) {
   from {
-    zipTree(configurations.compile.fileCollection { dep -> dep.group == "tv.acfun.cloud.common" && dep.name == "common" }.singleFile)
+    zipTree(configurations.provided.fileCollection { dep -> dep.group == "tv.acfun.cloud.common" && dep.name == "common" }.files.iterator().next())
   }
-  into "$buildDir/tmp/scripts"
+  into "$buildDir/tmp"
 }
 
 startScripts {
   dependsOn copyStartScript
 
-  unixStartScriptGenerator.template = resources.text.fromFile("$buildDir/tmp/scripts/customUnixStartScript.txt")
+  unixStartScriptGenerator.template = resources.text.fromFile("$buildDir/tmp/customUnixStartScript.txt")
   doLast {
     delete windowsScript
   }
+}
+
+bootRun {
+  jvmArgs = ["-DEUREKA_INSTANCE_IP=${getIP()}"]
 }
 
 task buildDocker(type: Docker, dependsOn: build) {

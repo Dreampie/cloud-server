@@ -1,6 +1,21 @@
+endpoints:
+  sensitive: true
+  info:
+    enabled: true
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    enabled: true
+  flyway:
+    enabled: true
+  logfile:
+    enabled: true
+
 spring:
   application:
     name: eureka-server
   cloud:
     config:
-      uri: ${CONFIG_SERVER_URL:http://192.168.60.41:8888}
+      uri: ${CONFIG_SERVER_URL:http://conf.cloud.acfun.tv:8888/}

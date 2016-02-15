@@ -1,9 +1,25 @@
 server:
   port: 8888
 
+endpoints:
+  sensitive: true
+  info:
+    enabled: true
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    enabled: true
+  flyway:
+    enabled: true
+  logfile:
+    enabled: true
+
 spring:
   cloud:
     config:
       server:
         git:
           uri: https://github.com/dreampie/cloud-config-repo.git
+

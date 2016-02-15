@@ -3,4 +3,4 @@ spring:
     name: turbine
   cloud:
     config:
-      uri: ${CONFIG_SERVER_URL:http://192.168.60.41:8888}
+      uri: ${CONFIG_SERVER_URL:http://conf.cloud.acfun.tv:8888/}

@@ -1,14 +1,16 @@
 subprojects {
   buildscript {
     ext {
-      springDependencyManagementVersion = "0.5.3.RELEASE"
-      springBootGradlePluginVersion = "1.2.7.RELEASE"
-      springBootStarterParentVersion = "1.3.1.RELEASE"
-      springCloudStarterParentVersion = "Brixton.M4"
-      springCloudConfigVersion = "1.0.3.RELEASE"
+      propdepsPluginVersion = "0.0.7"
+
+      springDependencyManagementVersion = "0.5.4.RELEASE"
+      springBootGradlePluginVersion = "1.3.2.RELEASE"
+      springCloudConfigVersion = "1.0.4.RELEASE"
+      springCloudStarterParentVersion = "Brixton.BUILD-SNAPSHOT"
+
       gradleDockerVersion = "1.2"
       gradleDockerRegistry = "registry.aixifan.com"
-      propdepsPluginVersion = "0.0.7"
+
     }
     repositories {
       mavenLocal()

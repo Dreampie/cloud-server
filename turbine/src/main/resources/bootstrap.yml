@@ -4,3 +4,4 @@ spring:
   cloud:
     config:
       uri: ${CONFIG_SERVER_URL:http://conf.cloud.acfun.tv:8888/}
+      label: developer

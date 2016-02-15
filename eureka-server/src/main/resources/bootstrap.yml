@@ -1,18 +1,3 @@
-endpoints:
-  sensitive: true
-  info:
-    enabled: true
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true
-  health:
-    enabled: true
-  flyway:
-    enabled: true
-  logfile:
-    enabled: true
-
 spring:
   application:
     name: eureka-server
